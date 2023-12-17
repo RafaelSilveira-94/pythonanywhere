@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caridade</title>
+</head>
+<body>
+    {% if evento_list %}
+
+    <h1>Eventos cadastrados</h1>
+    <ul>
+        {% for evento in evento_list %}
+            <li><a href="{% url 'caridade1:detail' evento.id %}">{{ evento.nome }}</a></li>
+        {% endfor %}
+
+    </ul>
+{% else %}
+    <p>Não há eventos cadastrados.</p>
+{% endif %}
+</body>
+</html>

@@ -6,21 +6,20 @@ from django.http import Http404
 
 # Create your views here.
 def index(request):
-    lista_evento = Evento.objects.filter(
-        data_pub__lte = timezone.now()
-    ).order_by('-data_pub')
-    contexto = {'evento_list': lista_evento}
-    return render(request, 'caridade/index.html', contexto)
+    evento_list = Evento.objects.all
+    contexto = {'evento_list': evento_list}
+    return render(request, 'index.html', contexto)
 
 def detail(request, evento_id):
     evento = get_object_or_404(Evento, pk=evento_id)
     item = Item.objects.filter(evento_id=evento_id)
+    
     context={
         'evento':evento,
         'item': item,
         }
-    if evento.ativo:
+    if evento.ativo is False:
         raise Http404('Nenhum evento satisfaz o critério informado')
     return render(
-        request, 'caridade/detalhes.html', context
+        request, 'detalhes.html', context
     )

@@ -1,0 +1,14 @@
+{% for item in item %}
+<p>
+    <strong> Nome: {{ item.descricao }} </strong>
+</p>
+<p>
+    <strong>Imagem:</strong> <img src=" {{ item.foto.url }}">
+</p>
+<p>
+    <strong>Preço:</strong> {{ item.preco }}
+</p>
+<p>
+    <strong>Evento:</strong> {{ item.evento.nome }}
+</p>
+{% endfor %}
