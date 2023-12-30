@@ -2,7 +2,11 @@ from django.shortcuts import render, get_object_or_404
 from .models import Evento, Item
 from django.utils import timezone
 from django.http import Http404
-
+from django.urls import reverse
+from .services import CadastrarPerfilService, LogarService
+from django import forms
+from .forms import LoginForm, UsuarioForm
+from django.shortcuts import render, get_object_or_404, redirect
 
 # Create your views here.
 def index(request):
@@ -23,3 +27,32 @@ def detail(request, evento_id):
     return render(
         request, 'detalhes.html', context
     )
+### View Login
+####################
+
+def logar(request):
+    if request.method == 'GET':
+        form = LoginForm()
+        return render(request, 'login.html', { 'form': form})
+    elif request.method == 'POST':
+        ls = LogarService()
+        if ls.Logar(request):
+            return redirect(reverse('index'))
+        else: 
+            form = LoginForm()
+            return render(request,'login.html',{'form': form})
+            
+### View Cadastrar Perfil
+###################        
+    
+def cadastrar_perfil(request):
+    if request.method == 'GET':
+        form = UsuarioForm()
+        return render(request, 'cadastro_perfil.html', { 'form': form})
+    if request.method == 'POST':
+        cps = CadastrarPerfilService()
+        if cps.cadastrar_perfil(request):
+            return redirect(reverse('index'))
+        else:
+            form = UsuarioForm(request.POST)
+            return render(request, 'cadastro_perfil.html', {'form': form}) 

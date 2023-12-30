@@ -1,0 +1,19 @@
+h1{
+    color:red;
+}
+h2{
+    margin: 30px;
+    margin-left: 80px;
+    margin-right: 80px;
+
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: gray;
+}
+#formulario_cadastro{
+    text-align: center;
+}
+
+#botao_cadastrar{
+    text-align:  center;
+}
