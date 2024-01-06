@@ -5,7 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Caridade</title>
 </head>
+{% load static %}
+
+
 <body>
+    {% include 'header.html' %}
     {% if evento_list %}
 
     <h1>Eventos cadastrados</h1>
@@ -18,5 +22,9 @@
 {% else %}
     <p>Não há eventos cadastrados.</p>
 {% endif %}
+{% if user.is_authenticated %}
+    | Logado como: {{ user.username }}
+{% endif %}
+
 </body>
 </html>

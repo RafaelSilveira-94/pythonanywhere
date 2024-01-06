@@ -7,4 +7,6 @@ urlpatterns=[
     path('evento/<int:evento_id>/', views.detail, name='detail'),
     path('logar/', views.logar, name='logar'),
     path('cadastrar_perfil/', views.cadastrar_perfil, name='cadastrar_perfil'),
+    path('cadastrar_evento/', views.cadastrar_evento, name='cadastrar_evento'),
+    path('cadastrar_item/', views.cadastrar_item, name='cadastrar_item'),
 ]

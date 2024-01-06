@@ -1,0 +1,10 @@
+{% load static %}
+
+{% include 'header.html' %}
+
+<h2>Cadastro de Evento</h2>
+<form method="post" action="{% url 'caridade1:cadastrar_evento' %}" enctype="multipart/form-data">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Cadastrar Evento</button>
+</form>

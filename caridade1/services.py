@@ -1,4 +1,4 @@
-from .forms import UsuarioForm, LoginForm
+from .forms import UsuarioForm, LoginForm, EventoForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login 
 
@@ -29,3 +29,18 @@ class LogarService:
             else:
                 messages.error(request,f'Invalid username or password') 
                 return False
+            
+class CadastrarEventoService:
+    def Cadastrar(self, request):
+        form = EventoForm(request.POST)
+        if form.is_valid():
+            evento = form.save(commit=False)
+            evento.user = request.user 
+            evento.save()
+            
+
+            messages.success(request, 'Evento cadastrado com sucesso.')
+            return True
+        else:
+            messages.error(request, 'Erro ao cadastrar evento. Verifique os campos.')
+            return False

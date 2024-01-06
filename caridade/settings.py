@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'caridade1.apps.Caridade1Config',
+    'bootstrap4',
 ]
 
 MIDDLEWARE = [
@@ -118,7 +119,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [
-    BASE_DIR / "static",
+    BASE_DIR / "caridade1/static",
 ]
 
 # Default primary key field type

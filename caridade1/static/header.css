@@ -1,0 +1,69 @@
+
+#barra{
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px;
+    margin-bottom: 40px;
+
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: gray;
+}
+#procura{
+    border: 5px;
+    border-color: black;
+    display: flex;
+    align-items: center;
+}
+#icone-pesquisa{
+    background-color: transparent;
+    color: gray;
+    border-color: transparent;
+}
+#pesquisa{
+    border-color: black;
+}
+h1{
+    font-family: 'Asteristico';
+}
+#botao-loc{
+    background-color: #f2f4ff;
+    color:red;
+    border-color: transparent;
+    
+}
+#barra-evento{
+    display: flex;
+}
+#icone-evento{
+    background-image: url("evento.jpg");
+    width: 35px;
+    height: 35px;
+    background-size: cover;
+}
+#meus-eventos-barra{
+    margin-top: 5px;
+    margin-left: 8px;
+}
+#usuario-barra{
+    display: flex;
+}
+#icone-perfil{
+    background-image: url("profile.jpg");
+    width: 35px;
+    height: 35px;
+    background-size: cover;
+}
+#login-barra{
+    margin-top: 5px;
+    margin-left: 8px;
+}
+#icone-barra{
+    background-image: url("menu.jpg");
+    width: 35px;
+    height: 35px;
+    background-size: contain;
+    border: transparent;
+    background-color: transparent;
+}

@@ -1,6 +1,6 @@
 {% load static %}
-<link rel="stylesheet" href="{% static 'css/cadastro_perfil.css' %}">
-
+<link rel="stylesheet" href="{% static 'cadastro_perfil.css' %}">
+{% include 'header.html' %}
 <form method="POST" novalidate>
 	{% csrf_token %}
 	<h2>Cadastrar Perfil</h2>
