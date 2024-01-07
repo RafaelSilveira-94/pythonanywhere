@@ -9,4 +9,5 @@ urlpatterns=[
     path('cadastrar_perfil/', views.cadastrar_perfil, name='cadastrar_perfil'),
     path('cadastrar_evento/', views.cadastrar_evento, name='cadastrar_evento'),
     path('cadastrar_item/', views.cadastrar_item, name='cadastrar_item'),
+    path('logout/', views.logoff, name='logoff'),
 ]

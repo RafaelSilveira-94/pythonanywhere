@@ -1,12 +1,14 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Evento, Item
+from .models import Evento, Item, Reservado
 from django.utils import timezone
 from django.http import Http404
 from django.urls import reverse
 from .services import CadastrarPerfilService, LogarService, CadastrarEventoService
 from django import forms
-from .forms import LoginForm, UsuarioForm, EventoForm, cadastrar_itemForm
+from .forms import LoginForm, UsuarioForm, EventoForm, cadastrar_itemForm, reservar_itemForm
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth import logout, authenticate, login
+from django.contrib import messages
 
 # Create your views here.
 def index(request):
@@ -17,21 +19,39 @@ def index(request):
 def detail(request, evento_id):
     evento = get_object_or_404(Evento, pk=evento_id)
     item = Item.objects.filter(evento_id=evento_id)
+    if request.method == 'GET':    
+        context={
+            'evento':evento,
+            'item': item,
+            }
+        if evento.ativo is False:
+            raise Http404('Nenhum evento satisfaz o critério informado')
+        return render(
+            request, 'detalhes.html', context
+        )
+    if request.method == 'POST':
+        if request.user.is_authenticated:
+            form = cadastrar_itemForm(request.Post)
+            if form.is_valid():
+                reservado = form.save(commit=False)
+                reservado.reservado = True
+                reservado.user = request.user
+                reservado.save()
+                messages.success(request, 'Item reservado com sucesso.')
+            else:
+                messages.error(request, 'Erro ao cadastrar evento. Verifique os campos.')
+        else:
+            return redirect('caridade1:logar')
+
+
     
-    context={
-        'evento':evento,
-        'item': item,
-        }
-    if evento.ativo is False:
-        raise Http404('Nenhum evento satisfaz o critério informado')
-    return render(
-        request, 'detalhes.html', context
-    )
 ### View Login
 ####################
 
 def logar(request):
     if request.method == 'GET':
+        if request.user.is_authenticated:
+            return redirect('caridade1:index')
         form = LoginForm()
         return render(request, 'login.html', { 'form': form})
     elif request.method == 'POST':
@@ -78,7 +98,14 @@ def cadastrar_item(request):
         form = cadastrar_itemForm(request.POST, request.FILES)
         if form.is_valid():
             novo_item = form.save(commit=False)
+            novo_item.user = request.user
+            novo_item.reservado = False 
             novo_item.save()
-            return redirect('index')
+            return redirect('caridade1:index')
         else:
             return render(request, 'cadastrar_item.html', {'form': form})
+        
+def logoff(request):
+    logout(request)
+    messages.success(request,'You have been logged out.')
+    return redirect('caridade1:index')    
