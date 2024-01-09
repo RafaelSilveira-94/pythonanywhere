@@ -7,7 +7,6 @@ class CadastrarPerfilService:
         form = UsuarioForm(request.POST) 
         if form.is_valid():
             user = form.save(commit=False)
-            user.username = user.username.lower()
             user.save()            
             messages.success(request, 'You have singed up successfully.')
             login(request, user)
