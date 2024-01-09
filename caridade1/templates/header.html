@@ -9,7 +9,7 @@
         <a href="{% url 'caridade1:index' %}" style="text-decoration: none;"><h1 style="font-family: Asteristico;"> Caridade </h1></a>
         <div id="pesquisa-barra-de-navegacao">
             
-            <form id="form" action=# method="post">
+            <form id="form" action="{% url 'caridade1:pesquisar_item' %}" method="post">
                 {% csrf_token %}
                 <div id="procura">
                 <input  name = 'termo_pesquisa' type="text" class="form-control rounded-pill" placeholder="Busque itens..." id="pesquisa">
@@ -35,7 +35,13 @@
             </div>
         </div>
         <div id="opcoes-barra">
-            <a href="{% url 'caridade1:cadastrar_perfil' %}" id="icone-barra"> Cadastrar Perfil </a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'caridade1:cadastrar_item' %}" style="text-decoration: none; color: red;">
+                    Cadastrar Item</a>
+                {% else %}
+                <a href="{% url 'caridade1:cadastrar_perfil' %}" id="icone-barra"> Cadastrar Perfil </a>
+                {% endif %}
+            
         </div>
     </div>
 </header>

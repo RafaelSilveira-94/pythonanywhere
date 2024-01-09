@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Resultados da sua pesquisa</title>
+</head>
+
+<body>
+    {% include 'header.html' %}
+    <p class="pag-titulo">
+    <h1>Resultados da Pesquisa</h1>
+    </p> 
+
+    {% if items %}
+    {% for item in items %}
+    <p>
+        <strong> Nome: {{ item.descricao }} </strong>
+    </p>
+    <p>
+        <strong>Imagem:</strong> <img src="{{ item.foto.url }}">
+    </p>
+    <p>
+        <strong>Preço:</strong> {{ item.preco }}
+    </p>
+    <p>
+        <strong>Usuário:</strong> {{ item.User.username }}
+    </p>
+    {% if user.is_authenticated and not item.reservado  %}
+    <p>
+        <form id="form" method="post" action="{% url 'caridade1:index' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" name="item_id" value="{{ item.id }}">Reservar Item</button>
+           
+          </form>
+    </p>
+    {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <p class="pag-titulo">
+    <h2>Nenhum evento encontrado</h2>
+    </p>
+    {% endif %}
+</body>
+
+</html>

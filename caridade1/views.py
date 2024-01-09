@@ -5,14 +5,14 @@ from django.http import Http404
 from django.urls import reverse
 from .services import CadastrarPerfilService, LogarService, CadastrarEventoService
 from django import forms
-from .forms import LoginForm, UsuarioForm, EventoForm, cadastrar_itemForm, reservar_itemForm
+from .forms import LoginForm, UsuarioForm, EventoForm, cadastrar_itemForm, reservar_itemForm, pesquisa_itemForm
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import logout, authenticate, login
 from django.contrib import messages
 
 # Create your views here.
 def index(request):
-    evento_list = Evento.objects.all
+    evento_list = Evento.objects.filter(ativo=True) 
     contexto = {'evento_list': evento_list}
     return render(request, 'index.html', contexto)
 
@@ -23,25 +23,31 @@ def detail(request, evento_id):
         context={
             'evento':evento,
             'item': item,
+            'form': reservar_itemForm()
             }
         if evento.ativo is False:
             raise Http404('Nenhum evento satisfaz o critério informado')
         return render(
             request, 'detalhes.html', context
         )
+
     if request.method == 'POST':
         if request.user.is_authenticated:
-            form = cadastrar_itemForm(request.Post)
+            form = reservar_itemForm(request.POST)  # Instantiate the form
             if form.is_valid():
-                reservado = form.save(commit=False)
-                reservado.reservado = True
-                reservado.user = request.user
+                item_id = request.POST.get('item_id')  # Retrieve the item ID from POST data
+                r_item = get_object_or_404(Item, pk=item_id)
+                reservado = Reservado.objects.create(
+                    item=r_item,  # Directly associate with the item
+                    reservado=True,
+                    User=request.user
+                )
                 reservado.save()
                 messages.success(request, 'Item reservado com sucesso.')
-            else:
-                messages.error(request, 'Erro ao cadastrar evento. Verifique os campos.')
+                return redirect('caridade1:index')
         else:
             return redirect('caridade1:logar')
+            
 
 
     
@@ -98,8 +104,8 @@ def cadastrar_item(request):
         form = cadastrar_itemForm(request.POST, request.FILES)
         if form.is_valid():
             novo_item = form.save(commit=False)
-            novo_item.user = request.user
-            novo_item.reservado = False 
+            novo_item.User = request.user
+            novo_item.Reservado = False 
             novo_item.save()
             return redirect('caridade1:index')
         else:
@@ -109,3 +115,20 @@ def logoff(request):
     logout(request)
     messages.success(request,'You have been logged out.')
     return redirect('caridade1:index')    
+
+class Pesquisa_itemForm(forms.Form):
+    termo_pesquisa = forms.CharField(label='Pesquisar item', max_length=100)
+
+### View PESQUISAR items
+#############
+def pesquisar_item(request):
+    items = Item.objects.all()
+    form = Pesquisa_itemForm()
+    
+    if request.method == 'POST':
+        form = Pesquisa_itemForm(request.POST)
+        if form.is_valid():
+            termo_pesquisa = form.cleaned_data.get('termo_pesquisa', '')
+            items = Item.objects.filter(descricao__contains=termo_pesquisa)
+    
+    return render(request, 'resultado_pesquisa.html', {'form': form, 'items': items})

@@ -32,13 +32,12 @@ class LogarService:
             
 class CadastrarEventoService:
     def Cadastrar(self, request):
-        form = EventoForm(request.POST)
+        form = EventoForm(request.POST, request.FILES)
         if form.is_valid():
             evento = form.save(commit=False)
-            evento.user = request.user 
+            evento.User = request.user 
             evento.save()
-            
-
+            form.save_m2m()
             messages.success(request, 'Evento cadastrado com sucesso.')
             return True
         else:

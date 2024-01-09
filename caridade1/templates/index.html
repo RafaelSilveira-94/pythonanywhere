@@ -11,7 +11,7 @@
 <body>
     {% include 'header.html' %}
     {% if evento_list %}
-
+    
     <h1>Eventos cadastrados</h1>
     <ul>
         {% for evento in evento_list %}
@@ -19,9 +19,9 @@
         {% endfor %}
 
     </ul>
-{% else %}
+    {% else %}
     <p>Não há eventos cadastrados.</p>
-{% endif %}
+    {% endif %}
 {% if user.is_authenticated %}
     | Logado como: {{ user.username }}
     <a href="{% url 'caridade1:logoff' %}">Logout</a>

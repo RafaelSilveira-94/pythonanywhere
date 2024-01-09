@@ -16,7 +16,7 @@ class UsuarioForm(UserCreationForm):
 class EventoForm(forms.ModelForm):
     class Meta:
         model = Evento
-        fields = ['nome', 'ativo',]
+        fields = ['nome', 'ativo','duracao']
 
 class cadastrar_itemForm(forms.ModelForm):
     class Meta:
@@ -27,3 +27,6 @@ class reservar_itemForm(forms.ModelForm):
     class Meta:
         model = Reservado
         fields = ['reservado']
+
+class pesquisa_itemForm(forms.Form):
+    termo_pesquisa = forms.CharField(label='item', max_length=100)

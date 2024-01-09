@@ -1,14 +1,27 @@
+{% load static %}
+{% include 'header.html' %}
+<h1> {{evento.nome}} </h1>
 {% for item in item %}
 <p>
     <strong> Nome: {{ item.descricao }} </strong>
 </p>
 <p>
-    <strong>Imagem:</strong> <img src=" {{ item.foto.url }}">
+    <strong>Imagem:</strong> <img src="{{ item.foto.url }}">
 </p>
 <p>
     <strong>Preço:</strong> {{ item.preco }}
 </p>
 <p>
-    <strong>Evento:</strong> {{ item.evento.nome }}
+    <strong>Usuário:</strong> {{ item.User.username }}
 </p>
+{% if user.is_authenticated and not item.reservado  %}
+<p>
+    <form id="form" method="post" action="{% url 'caridade1:detail' evento.id %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" name="item_id" value="{{ item.id }}">Reservar Item</button>
+       
+      </form>
+</p>
+{% endif %}
 {% endfor %}
